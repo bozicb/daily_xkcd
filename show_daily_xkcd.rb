@@ -1,6 +1,7 @@
 require 'tk'
 require 'open-uri'
 require 'net/http'
+require 'json'
 
 def download_image(url, dest)
   open(url) do |u|
@@ -8,12 +9,15 @@ def download_image(url, dest)
   end
 end
 
+xkcd_json=JSON.parse(Net::HTTP.get(URI('https://xkcd.com/info.0.json')))
+
+
 $resultsVar = TkVariable.new
 root = TkRoot.new
 root.title = "Window"
 
 image = TkPhotoImage.new
-download_image("https://imgs.xkcd.com/comics/autogyros.png","/tmp/xkcd.png")
+download_image(xkcd_json['img'],"/tmp/xkcd.png")
 image.file = "/tmp/xkcd.png"
 
 label = TkLabel.new(root) 
